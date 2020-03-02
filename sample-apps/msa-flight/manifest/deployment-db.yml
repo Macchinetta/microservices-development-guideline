@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-db
+  labels:
+    app: flight-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flight-db
+  template:
+    metadata:
+      labels:
+        app: flight-db
+    spec:
+      containers:
+      - name: flight-db
+        image: postgres:11-alpine
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - configMapRef:
+            name: m9amsa-configmap
+        readinessProbe:
+          exec:
+            command:
+            - psql
+            - -U
+            - postgres
+            - -w
+            - postgres
+            - -c
+            - "SELECT 1"
+          initialDelaySeconds: 3
+          periodSeconds: 3
+

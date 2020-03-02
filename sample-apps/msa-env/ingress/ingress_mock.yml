@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-mock
+  namespace: mock
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: mock.sampleapplication.xyz
+    http:
+      paths:
+      - path: /msaref/flight
+        backend:
+          serviceName: flight
+          servicePort: 28080
+      - path: /msaref/airplane
+        backend:
+          serviceName: flight
+          servicePort: 80
+      - path: /msaref/airport
+        backend:
+          serviceName: flight
+          servicePort: 80
+      - path: /msaref/basic-fare
+        backend:
+          serviceName: flight
+          servicePort: 80
+      - path: /msaref/reserve
+        backend:
+          serviceName: reserve
+          servicePort: 28080
+      - path: /msaref/account
+        backend:
+          serviceName: account
+          servicePort: 28080
+      - path: /msaref/purchase
+        backend:
+          serviceName: purchase
+          servicePort: 28080
+      - path: /msaref/flight-ticket-fare
+        backend:
+          serviceName: flight-ticket-fare-calculation
+          servicePort: 28080
+      - path: /msaref/reserve-notice
+        backend:
+          serviceName: reserve-notice
+          servicePort: 28080
+      - path: /msaref/purchase-notice
+        backend:
+          serviceName: purchase-notice
+          servicePort: 28080

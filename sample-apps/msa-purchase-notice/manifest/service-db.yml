@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: purchase-notice-db
+spec:
+  type: ClusterIP
+  selector:
+    app: purchase-notice-db
+  ports:
+  - port: 5432
+    targetPort: 5432

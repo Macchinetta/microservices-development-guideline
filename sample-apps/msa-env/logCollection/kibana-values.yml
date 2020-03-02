@@ -1,0 +1,2 @@
+env:
+  ELASTICSEARCH_HOSTS: "http://m9a-e-elasticsearch-client:9200"

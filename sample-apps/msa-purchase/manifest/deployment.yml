@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: purchase-${TARGET_ROLE}
+  labels:
+    app: purchase
+    role: ${TARGET_ROLE}
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: '/actuator/prometheus'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: purchase
+  template:
+    metadata:
+      labels:
+        app: purchase
+        role: ${TARGET_ROLE}
+    spec:
+      containers:
+      - name: purchase
+        image: ${TARGET_IMAGE}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 28080
+        envFrom:
+        - configMapRef:
+            name: m9amsa-configmap
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 28080
+          initialDelaySeconds: 25
+          periodSeconds: 10

@@ -1,0 +1,34 @@
+include::_include_index.adoc[]
+include::_include_all.adoc[]
+
+= {doctitle}
+
+. <<01_introduction.adoc#introduction,はじめに>>
+
+. <<02_architecture_summary.adoc#architecture_summary,アーキテクチャ概要>>
+
+. <<03_sample_application.adoc#sample_application,サンプルアプリケーション>>
+
+. <<04_kubernetes.adoc#kubernetes_section,Kubernetes>>
+
+. <<05_api_gateaway.adoc#api_gateaway,APIゲートウェイ>>
+
+. <<06_service_discovery.adoc#service_discovery,サービスディスカバリ>>
+
+. <<07_circuit_breaker.adoc#circuit_breaker,サーキットブレーカ>>
+
+. <<08_access_control.adoc#access_control,アクセス制御>>
+
+. <<09_property_external_manage.adoc#property_external_manage,設定の外部化>>
+
+. <<10_synchronization.adoc#synchronization,同期連携>>
+
+. <<11_log_aggregation.adoc#log_aggregation,ログ集中管理>>
+
+. <<12_distributed_tracing.adoc#distributed_tracing,分散トレーシング>>
+
+. <<13_healthcheck.adoc#healthcheck,ヘルスチェック>>
+
+. <<14_deployment.adoc#deployment_section,デプロイメント>>
+
+<<single_index.adoc#,Singleページ版>>

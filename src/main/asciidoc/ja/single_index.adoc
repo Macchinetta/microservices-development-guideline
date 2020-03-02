@@ -1,0 +1,39 @@
+include::_include_index.adoc[]
+include::_include_all.adoc[]
+:sectnums:
+:sectnumlevels: 5
+
+= {doctitle}
+
+// 各章はLevel1から始めるため、1段下げる
+:leveloffset: +1
+
+include::01_introduction.adoc[]
+
+include::02_architecture_summary.adoc[]
+
+include::03_sample_application.adoc[]
+
+include::04_kubernetes.adoc[]
+
+include::05_api_gateaway.adoc[]
+
+include::06_service_discovery.adoc[]
+
+include::07_circuit_breaker.adoc[]
+
+include::08_access_control.adoc[]
+
+include::09_property_external_manage.adoc[]
+
+include::10_synchronization.adoc[]
+
+include::11_log_aggregation.adoc[]
+
+include::12_distributed_tracing.adoc[]
+
+include::13_healthcheck.adoc[]
+
+include::14_deployment.adoc[]
+
+:leveloffset: -1

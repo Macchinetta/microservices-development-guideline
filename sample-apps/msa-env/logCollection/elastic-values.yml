@@ -1,0 +1,5 @@
+client:
+  ingress:
+    enabled: false
+    hosts: 
+      - msa-ec

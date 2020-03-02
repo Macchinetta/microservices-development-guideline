@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-ticket-fare-calculation-${TARGET_ROLE}
+  labels:
+    app: flight-ticket-fare-calculation
+    role: ${TARGET_ROLE}
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: '/actuator/prometheus'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flight-ticket-fare-calculation
+  template:
+    metadata:
+      labels:
+        app: flight-ticket-fare-calculation
+        role: ${TARGET_ROLE}
+    spec:
+      containers:
+      - name: flight-ticket-fare-calculation
+        image: ${TARGET_IMAGE}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 28080
+        envFrom:
+        - configMapRef:
+            name: m9amsa-configmap
+        livenessProbe:
+          httpGet:
+            path: /actuactor/health
+            port: 28080
+          initialDelaySeconds: 25
+          periodSeconds: 10

@@ -1,0 +1,14 @@
+{
+	"properties": [
+		{
+			"name": "m9amsa.actuator.health.threshold.memory",
+			"type": "java.lang.Double",
+			"description": "ヘルスチェック用のメモリ使用率の閾値です"
+		},
+		{
+			"name": "m9amsa.actuator.health.threshold.cpu",
+			"type": "java.lang.Double",
+			"description": "ヘルスチェック用のcpu使用率の閾値です"
+		}
+	]
+}

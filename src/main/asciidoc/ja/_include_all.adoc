@@ -1,0 +1,21 @@
+// 各adocファイルに対し設定する項目を記述するためのadoc
+
+// Table, Exampleブロックのキャプションを無効にする
+:example-caption!:
+:table-caption!:
+:figure-caption!:
+
+// フッターのindexページへのリンク先をSingleとMultiページのHTMLで変更する
+:index_ref: "index.html"
+ifeval::["{docname}" == "single_index"]
+:index_ref: "#"
+endif::[]
+
+// ドキュメント全体で使用される名称等を定義する
+:msa_fullname: Microservices Development Guideline
+
+:boot_version: 2.1.7.RELEASE
+:boot_url: https://docs.spring.io/spring-boot/docs/{boot_version}/reference/htmlsingle
+
+:cloud_version: Greenwich.SR2
+:cloud_url: http://cloud.spring.io/spring-cloud-static/{cloud_version}/single/spring-cloud.html

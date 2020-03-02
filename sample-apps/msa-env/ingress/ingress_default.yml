@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-default
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: grafana.sampleapplication.xyz
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: graf-grafana
+            servicePort: 80
+    - host: jaeger.sampleapplication.xyz
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: jaeger-query
+            servicePort: 80
+    - host: kibana.sampleapplication.xyz
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: m9a-k-kibana
+            servicePort: 443
+    - host: elasticsearch.sampleapplication.xyz
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: m9a-e-elasticsearch-client
+            servicePort: 9200
+    - host: prometheus.sampleapplication.xyz
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: prom-prometheus-server
+            servicePort: 30080
+    - host: prometheus-alertmanager.sampleapplication.xyz
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: prom-prometheus-alertmanager
+            servicePort: 80

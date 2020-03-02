@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-ticket-fare-calculation-db
+  labels:
+    app: flight-ticket-fare-calculation-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flight-ticket-fare-calculation-db
+  template:
+    metadata:
+      labels:
+        app: flight-ticket-fare-calculation-db
+    spec:
+      containers:
+      - name: flight-ticket-fare-calculation-db
+        image: postgres:11-alpine
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - configMapRef:
+            name: m9amsa-configmap
+        readinessProbe:
+          exec:
+            command:
+            - psql
+            - -U
+            - postgres
+            - -w
+            - postgres
+            - -c
+            - "SELECT 1"
+          initialDelaySeconds: 3
+          periodSeconds: 3
+

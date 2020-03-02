@@ -1,0 +1,20 @@
+= Microservices Development Guideline
+
+== HTML,PDFのビルド
+
+2回 ``mvnw`` コマンドを実行する必要があります.
+
+[source, text]
+----
+$ mvnw -f image_pom.xml
+$ mvnw
+----
+
+If build is successful, HTML files generate to the directory below.
+
+* HTML : ``{your repository}/target/generated-docs/html``
+* PDF  : ``{your repository}/target/generated-docs/pdf``
+
+== 利用規約
+
+利用規約については ``src/main/asciidoc/ja/01_introduction.adoc`` の「規約」をご覧ください.

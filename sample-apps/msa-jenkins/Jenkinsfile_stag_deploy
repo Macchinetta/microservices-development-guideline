@@ -1,0 +1,91 @@
+
+node {
+    echo "JOB_NAME: $JOB_NAME"
+    def manifestspath = "/var/lib/jenkins/workspace/msa-manifests"
+    def servicename = ""
+
+    switch("$JOB_NAME") {
+        case "demostag_build_reserve-notice":
+          servicename = "reserve-notice"
+          break
+        case "demostag_build_reserve":
+          servicename = "reserve"
+          break
+        case "demostag_build_purchase-notice":
+          servicename = "purchase-notice"
+          break
+        case "demostag_build_purchase":
+          servicename = "purchase"
+          break
+        case "demostag_build_flight-ticket-fare-calculation":
+          servicename = "flight-ticket-fare-calculation"
+          break
+        case "demostag_build_flight":
+          servicename = "flight"
+          break
+        case "demostag_build_account":
+          servicename = "account"
+          break
+        default:
+          break
+    }
+
+    echo "servicename: ${servicename}"
+
+    if (servicename == "") {
+        error "servicename is empty"
+    }
+
+    stage('Delete dir') {
+        deleteDir()
+    }
+
+    def githash = ""
+    
+    sh "mkdir msa-${servicename}"
+
+    dir("./msa-${servicename}/") {
+
+        stage("Git checkout ${servicename}") { 
+            // Get some code from a GitHub repository
+            git credentialsId: 'eb7991fa-c3ab-407c-8466-8ed83dc66fee', url: "https://gitlab.sampleapplicationtest.xyz/cloud-native-m9a-msa/msa-${servicename}.git"
+            githash = sh(returnStdout: true, script: "git rev-parse HEAD | awk '{print substr(\$0, 1, 8)}'").trim()
+            echo "githash: ${githash}"
+        }
+
+        stage("backup Manifests") {
+            sh "mkdir -p ${manifestspath}/${servicename}/${currentBuild.number}.${githash}"
+            sh "cp -p ./manifest/* ${manifestspath}/${servicename}/${currentBuild.number}.${githash}/"
+        }
+
+        stage("Maven build ${servicename}") {
+            sh './mvnw -Dmaven.test.skip=true clean package'
+        }
+
+        stage("Docker ${servicename} build") {
+            docker.build("${servicename}")
+        }
+
+        stage("Docker ${servicename} push") {
+            docker.withRegistry('https://307190070403.dkr.ecr.ap-northeast-1.amazonaws.com', 'ecr:ap-northeast-1:aws-ecr-cred') {
+                docker.image("${servicename}").push("${currentBuild.number}.${githash}")
+            }
+            
+            print ("image tag: ${currentBuild.number}.${githash}")
+        }
+    }
+
+    sh "mkdir msa-jenkins"
+
+    dir("./msa-jenkins/") {
+        stage("Git checkout msa-jenkins") {
+            // Get some code from a GitHub repository
+            git credentialsId: 'eb7991fa-c3ab-407c-8466-8ed83dc66fee', url: "https://gitlab.sampleapplicationtest.xyz/cloud-native-m9a-msa/msa-jenkins.git"
+        }
+
+        stage("Deploy ${servicename}") {
+            sh label: '', script: "./deploy.sh ${servicename} ${currentBuild.number}.${githash} stag"
+        }
+    }
+
+}

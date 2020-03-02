@@ -1,0 +1,5 @@
+service:
+  type: ClusterIP
+  nodePort: 30181
+adminUser: admin
+adminPassword: password

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flight-ticket-fare-calculation-db
+spec:
+  type: ClusterIP
+  selector:
+    app: flight-ticket-fare-calculation-db
+  ports:
+  - port: 5432
+    targetPort: 5432

@@ -1,0 +1,43 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: m9amsa-configmap
+  namespace: local
+data:
+  # URLのベース文字列
+  URL_ROOT: msaref
+  # サービスコンテナのホスト名称
+  HOSTNAME_ACCOUNT: account
+  HOSTNAME_FLIGHT: flight
+  HOSTNAME_RESERVE: reserve
+  HOSTNAME_PURCHASE: purchase
+  HOSTNAME_CALCULATE_FARE: flight-ticket-fare-calculation
+  HOSTNAME_RESERVE_NOTICE: reserve-notice
+  HOSTNAME_PURCHASE_NOTICE: purchase-notice
+  # DBコンテナのホスト名称
+  DB_HOSTNAME_ACCOUNT: account-db:5432
+  DB_HOSTNAME_FLIGHT: flight-db:5432
+  DB_HOSTNAME_RESERVE: reserve-db:5432
+  DB_HOSTNAME_PURCHASE: purchase-db:5432
+  DB_HOSTNAME_CALCULATE_FARE: flight-ticket-fare-calculation-db:5432
+  DB_HOSTNAME_RESERVE_NOTICE: reserve-notice-db:5432
+  DB_HOSTNAME_PURCHASE_NOTICE: purchase-notice-db:5432
+  # DB接続情報
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_DB: m9amsa
+  # KAFKA情報
+  KAFKA_BROKER: m9amsa-cp-kafka
+  # JARGER情報
+  JAEGER_HOST: jaeger-agent.default
+  # JAEGERへ通知するサービス名称
+  JAEGER_SERVICENAME_ACCOUNT: local-msa-account
+  JAEGER_SERVICENAME_FLIGHT: local-msa-flight
+  JAEGER_SERVICENAME_RESERVE: local-msa-reserve
+  JAEGER_SERVICENAME_PURCHASE: local-msa-purchase
+  JAEGER_SERVICENAME_CALCULATE_FARE: local-msa-flight-ticket-fare-calculation
+  JAEGER_SERVICENAME_RESERVE_NOTICE: local-msa-reserve-notice
+  JAEGER_SERVICENAME_PURCHASE_NOTICE: local-msa-purchase-notice
+  # oauth2 client認可情報
+  OAUTH2_CLIENT_ID: my-client
+  OAUTH2_CLIENT_SECRET: "1"

@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-local
+  namespace: local
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: local-server
+    http:
+      paths:
+      - path: /msaref/flight
+        backend:
+          serviceName: flight
+          servicePort: 80
+      - path: /msaref/airplane
+        backend:
+          serviceName: flight
+          servicePort: 80
+      - path: /msaref/airport
+        backend:
+          serviceName: flight
+          servicePort: 80
+      - path: /msaref/basic-fare
+        backend:
+          serviceName: flight
+          servicePort: 80
+      - path: /msaref/reserve
+        backend:
+          serviceName: reserve
+          servicePort: 80
+      - path: /msaref/account
+        backend:
+          serviceName: account
+          servicePort: 80
+      - path: /msaref/purchase
+        backend:
+          serviceName: purchase
+          servicePort: 80
+      - path: /msaref/flight-ticket-fare
+        backend:
+          serviceName: flight-ticket-fare-calculation
+          servicePort: 80
+      - path: /msaref/reserve-notice
+        backend:
+          serviceName: reserve-notice
+          servicePort: 80
+      - path: /msaref/purchase-notice
+        backend:
+          serviceName: purchase-notice
+          servicePort: 80

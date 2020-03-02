@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reserve-db
+spec:
+  type: ClusterIP
+  selector:
+    app: reserve-db
+  ports:
+  - port: 5432
+    targetPort: 5432

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-${TARGET_ROLE}
+  labels:
+    app: account
+    role: ${TARGET_ROLE}
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: '/actuator/prometheus'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account
+      role: ${TARGET_ROLE}
+  template:
+    metadata:
+      labels:
+        app: account
+        role: ${TARGET_ROLE}
+    spec:
+      containers:
+      - name: account
+        image: ${TARGET_IMAGE}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 28080
+        envFrom:
+        - configMapRef:
+            name: m9amsa-configmap
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 28080
+          initialDelaySeconds: 25
+          periodSeconds: 10

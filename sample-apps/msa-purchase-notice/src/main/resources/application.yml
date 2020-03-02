@@ -1,0 +1,93 @@
+server:
+  port: 28080
+info:
+  url:
+    root-path: ${URL_ROOT}
+  rss:
+    version: 2.0
+    title: M9AREF
+    channel:
+      description: 購入通知
+flight:
+  ribbon:
+    listOfServers: ${HOSTNAME_FLIGHT}
+spring:
+  application:
+    name: purchase-notice
+  datasource:
+    url: jdbc:postgresql://${DB_HOSTNAME_PURCHASE_NOTICE}/m9amsa
+    username: postgres
+    password: postgres
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: ConnectionPool
+      leakDetectionThreshold: 5000
+      connection-test-query: SELECT 1
+      minimum-idle: 5
+      maximum-pool-size: 10
+      auto-commit: false
+      idle-timeout: 10000
+      max-lifetime: 30000
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create
+  cloud:
+    kubernetes:
+      ribbon:
+        enabled: false
+    stream:
+      bindings:
+        purchase_input:
+          destination: purchase_topic
+          contentType: application/json
+      kafka:
+        binder:
+          brokers:
+            - ${KAFKA_BROKER}
+opentracing:
+  jaeger:
+    service-name: ${JAEGER_SERVICENAME_PURCHASE_NOTICE}
+    udp-sender:
+      host: ${JAEGER_HOST}
+      port: 6831
+logging:
+  pattern:
+    console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} [%16.16X{traceId}:%16.16X{parentSpanId}:%16.16X{spanId}] %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+
+resilience4j:
+  ## サーキットブレーカー
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 1
+        permitted-number-of-calls-in-half-open-state: 1
+        wait-duration-in-open-state: 60000
+        failure-rate-threshold: 100
+        automatic-transition-from-open-to-half-open-enabled: true
+        record-failure-predicate: com.example.m9amsa.purchaseNotice.circuitbreaker.FeignClientExceptionPredicate
+        register-health-indicator: true
+    instances:
+      flightCircuitBreaker:
+        baseConfig: default
+  ## リトライ
+  retry:
+    configs:
+      default:
+        max-retry-attempts: 3
+        wait-duration: 500ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exception-predicate: com.example.m9amsa.purchaseNotice.circuitbreaker.FeignClientExceptionPredicate
+    instances:
+      flightRetry:
+        base-config: default
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
